@@ -361,7 +361,7 @@ func (h *HCI) handleLEMeta(b []byte) error {
 	// case evt.LELTKRequest:
 	// case evt.LERemoteConnectionParameterRequest:
 	default:
-		return fmt.Errorf("Unhandled LE event: %s, [ % X ]", code, b)
+		return fmt.Errorf("Unhandled LE event: %v, [ % X ]", code, b)
 	}
 	return nil
 }
@@ -393,5 +393,5 @@ func (h *HCI) handleL2CAP(b []byte) error {
 }
 
 func (h *HCI) trace(fmt string, v ...interface{}) {
-	log.Printf(fmt, v)
+	log.Printf(fmt, v...)
 }
