@@ -2,6 +2,7 @@ package gatt
 
 import (
 	"errors"
+	"fmt"
 )
 
 // MaxEIRPacketLength is the maximum allowed AdvertisingPacket
@@ -76,7 +77,14 @@ type Advertisement struct {
 }
 
 // This is only used in Linux port.
-func (a *Advertisement) unmarshall(b []byte) error {
+func (a *Advertisement) unmarshall(b []byte) (err error) {
+	err = nil
+
+	defer func() {
+	   if r := recover(); r != nil {
+               err = fmt.Errorf("panic in unmarshall %s", r)
+           }
+	}()
 
 	// Utility function for creating a list of uuids.
 	uuidList := func(u []UUID, d []byte, w int) []UUID {
@@ -134,7 +142,7 @@ func (a *Advertisement) unmarshall(b []byte) error {
 		}
 		b = b[1+l:]
 	}
-	return nil
+	return
 }
 
 // AdvPacket is an utility to help crafting advertisment or scan response data.
